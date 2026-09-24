@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.room.Room
 import com.example.studentmanagement.data.local.AppDatabase
+import com.example.studentmanagement.data.remote.RetrofitClient
 import com.example.studentmanagement.data.repository.StudentRepository
 import com.example.studentmanagement.ui.StudentScreen
 import com.example.studentmanagement.ui.theme.StudentManagementTheme
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
             "student_database"
         ).build()
 
-        val repository = StudentRepository(db.studentDao())
+        val repository = StudentRepository(db.studentDao(), RetrofitClient.api)
 
         val viewModel = StudentViewModel(repository)
 
