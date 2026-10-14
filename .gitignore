@@ -34,3 +34,8 @@ google-services.json
 
 # Course materials (PDFs from instructor)
 /doc/
+
+# Backend (student-api)
+venv/
+__pycache__/
+.env

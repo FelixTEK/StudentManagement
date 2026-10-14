@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +66,10 @@ private fun StudentListScreen(
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        viewModel.loadStudents()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +81,7 @@ private fun StudentListScreen(
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(onClick = { viewModel.loadStudents() }) {
-                Text("Load Students")
+                Text("Refresh")
             }
             Button(onClick = { showAddDialog = true }) {
                 Text("+ Add Student")
