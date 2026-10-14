@@ -55,25 +55,27 @@ class StudentViewModel(
     }
 
     fun addStudent(code: String, name: String, major: String) {
-        viewModelScope.launch {
-            val newId = (students.maxOfOrNull { it.id } ?: 0) + 1
-            val newStudent = Student(id = newId, studentCode = code, name = name, major = major)
-            repository.addStudent(newStudent)
-            loadStudents()
-        }
+        // id ให้ server เป็นผู้สร้าง ส่งค่า 0 ไปเป็นแค่ placeholder (ไม่ได้ถูกใช้)
+        val newStudent = Student(id = 0, studentCode = code, name = name, major = major)
+        runAndReload("เพิ่มนักศึกษาไม่สำเร็จ") { repository.addStudent(newStudent) }
     }
 
     fun updateStudent(student: Student) {
-        viewModelScope.launch {
-            repository.addStudent(student)
-            loadStudents()
-        }
+        runAndReload("แก้ไขนักศึกษาไม่สำเร็จ") { repository.updateStudent(student) }
     }
 
     fun deleteStudent(student: Student) {
+        runAndReload("ลบนักศึกษาไม่สำเร็จ") { repository.deleteStudent(student) }
+    }
+
+    private fun runAndReload(failMessage: String, action: suspend () -> Unit) {
         viewModelScope.launch {
-            repository.deleteStudent(student)
-            loadStudents()
+            try {
+                action()
+                loadStudents()
+            } catch (e: Exception) {
+                errorMessage = failMessage
+            }
         }
     }
 }

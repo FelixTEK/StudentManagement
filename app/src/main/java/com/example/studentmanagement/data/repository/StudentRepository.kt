@@ -2,6 +2,8 @@ package com.example.studentmanagement.data.repository
 
 import com.example.studentmanagement.data.local.StudentDao
 import com.example.studentmanagement.data.remote.StudentApi
+import com.example.studentmanagement.data.remote.StudentCreateRequest
+import com.example.studentmanagement.data.remote.StudentDto
 import com.example.studentmanagement.model.Student
 
 class StudentRepository(
@@ -10,19 +12,49 @@ class StudentRepository(
 ) {
     suspend fun getStudents(): List<Student> {
         return try {
-            val remoteStudents = api.getStudents()
-            remoteStudents.forEach { dao.insertStudent(it) }
+            val remoteStudents = api.getStudents().map {
+                Student(
+                    id = it.id,
+                    studentCode = it.studentCode,
+                    name = it.name,
+                    major = it.major
+                )
+            }
+            // Server เป็นแหล่งข้อมูลจริง: ล้าง cache เดิมแล้วเก็บชุดใหม่
+            dao.deleteAll()
+            dao.insertAll(remoteStudents)
             remoteStudents
         } catch (e: Exception) {
             dao.getAllStudents()
         }
     }
 
+    // ส่งไป server ก่อน แล้วค่อยเก็บสำเนาใน Room (ถ้า server ล้มเหลว จะโยน exception ให้ ViewModel)
     suspend fun addStudent(student: Student) {
-        dao.insertStudent(student)
+        val created = api.createStudent(student.toRequest())
+        dao.insertStudent(created.toStudent())
+    }
+
+    suspend fun updateStudent(student: Student) {
+        val updated = api.updateStudent(student.id, student.toRequest())
+        dao.insertStudent(updated.toStudent())
     }
 
     suspend fun deleteStudent(student: Student) {
+        api.deleteStudent(student.id)
         dao.deleteStudent(student)
     }
+
+    private fun Student.toRequest() = StudentCreateRequest(
+        studentCode = studentCode,
+        name = name,
+        major = major
+    )
+
+    private fun StudentDto.toStudent() = Student(
+        id = id,
+        studentCode = studentCode,
+        name = name,
+        major = major
+    )
 }
