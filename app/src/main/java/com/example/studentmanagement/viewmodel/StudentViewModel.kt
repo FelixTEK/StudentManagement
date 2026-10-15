@@ -55,7 +55,6 @@ class StudentViewModel(
     }
 
     fun addStudent(code: String, name: String, major: String) {
-        // id ให้ server เป็นผู้สร้าง ส่งค่า 0 ไปเป็นแค่ placeholder (ไม่ได้ถูกใช้)
         val newStudent = Student(id = 0, studentCode = code, name = name, major = major)
         runAndReload("เพิ่มนักศึกษาไม่สำเร็จ") { repository.addStudent(newStudent) }
     }
