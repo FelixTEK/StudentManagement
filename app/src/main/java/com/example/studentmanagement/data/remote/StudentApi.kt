@@ -1,7 +1,5 @@
 package com.example.studentmanagement.data.remote
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -29,18 +27,3 @@ interface StudentApi {
         @Path("id") id: Int
     )
 }
-
-object RetrofitClient {
-    private const val BASE_URL =
-        "http://127.0.0.1:8000/"
-    val api: StudentApi by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(
-                GsonConverterFactory.create()
-            )
-            .build()
-            .create(StudentApi::class.java)
-    }
-}
-

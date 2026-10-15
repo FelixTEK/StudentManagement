@@ -20,7 +20,6 @@ class StudentRepository(
                     major = it.major
                 )
             }
-            // Server เป็นแหล่งข้อมูลจริง: ล้าง cache เดิมแล้วเก็บชุดใหม่
             dao.deleteAll()
             dao.insertAll(remoteStudents)
             remoteStudents
@@ -29,7 +28,6 @@ class StudentRepository(
         }
     }
 
-    // ส่งไป server ก่อน แล้วค่อยเก็บสำเนาใน Room (ถ้า server ล้มเหลว จะโยน exception ให้ ViewModel)
     suspend fun addStudent(student: Student) {
         val created = api.createStudent(student.toRequest())
         dao.insertStudent(created.toStudent())
