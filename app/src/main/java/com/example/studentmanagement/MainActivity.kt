@@ -14,11 +14,11 @@ import com.example.studentmanagement.data.remote.RetrofitClient
 import com.example.studentmanagement.data.remote.StudentApi
 import com.example.studentmanagement.data.remote.TokenStorage
 import com.example.studentmanagement.data.repository.StudentRepository
-import com.example.studentmanagement.ui.StudentScreen
 import com.example.studentmanagement.ui.login.LoginScreen
 import com.example.studentmanagement.ui.login.LoginViewModel
+import com.example.studentmanagement.ui.student.StudentScreen
+import com.example.studentmanagement.ui.student.StudentViewModel
 import com.example.studentmanagement.ui.theme.StudentManagementTheme
-import com.example.studentmanagement.viewmodel.StudentViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

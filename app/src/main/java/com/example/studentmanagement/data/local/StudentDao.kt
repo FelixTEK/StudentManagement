@@ -1,27 +1,19 @@
 package com.example.studentmanagement.data.local
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.example.studentmanagement.model.Student
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StudentDao {
-    @Query("SELECT * FROM students")
-    suspend fun getAllStudents(): List<Student>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStudent(student: Student)
+    @Query("SELECT * FROM students ORDER BY name")
+    fun observeStudents(): Flow<List<StudentEntity>>
 
-    @Delete
-    suspend fun deleteStudent(
-        student: Student
-    )
-
-    @Query("DELETE FROM students")
-    suspend fun deleteAll()
+    @Query("SELECT * FROM students WHERE syncStatus = 'PENDING'")
+    suspend fun getPendingStudents(): List<StudentEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(students: List<Student>)
+    suspend fun insertStudent(student: StudentEntity)
+
+    @Update
+    suspend fun updateStudent(student: StudentEntity)
 }
