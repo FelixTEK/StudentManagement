@@ -19,11 +19,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.studentmanagement.data.local.StudentEntity
+import com.example.studentmanagement.worker.SyncScheduler
 
 @Composable
 fun StudentScreen(viewModel: StudentViewModel) {
+    val context = LocalContext.current
     val students by viewModel.students.collectAsState()
     var showAddDialog by remember { mutableStateOf(false) }
 
@@ -40,7 +43,13 @@ fun StudentScreen(viewModel: StudentViewModel) {
                 Text("Sync Now")
             }
         }
-
+        Button(
+            onClick = {
+                SyncScheduler.syncNow(context)
+            }
+        ) {
+            Text("Sync in Background")
+        }
         LazyColumn {
             items(students) { student ->
                 Column {
