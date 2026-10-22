@@ -21,11 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.studentmanagement.data.local.StudentEntity
 import com.example.studentmanagement.worker.SyncScheduler
 
 @Composable
-fun StudentScreen(viewModel: StudentViewModel) {
+fun StudentScreen(viewModel: StudentViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val students by viewModel.students.collectAsState()
     var showAddDialog by remember { mutableStateOf(false) }

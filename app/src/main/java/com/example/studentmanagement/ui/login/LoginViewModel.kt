@@ -8,8 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.studentmanagement.data.remote.AuthApi
 import com.example.studentmanagement.data.remote.TokenStorage
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val authApi: AuthApi,
     private val tokenStorage: TokenStorage
 ) : ViewModel() {

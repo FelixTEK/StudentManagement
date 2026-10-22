@@ -5,8 +5,9 @@ import com.example.studentmanagement.data.local.StudentEntity
 import com.example.studentmanagement.data.remote.StudentApi
 import com.example.studentmanagement.data.remote.StudentCreateRequest
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class StudentRepository(
+class StudentRepository @Inject constructor(
     private val dao: StudentDao,
     private val api: StudentApi
 ) {

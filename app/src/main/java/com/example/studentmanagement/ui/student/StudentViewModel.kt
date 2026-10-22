@@ -7,8 +7,11 @@ import com.example.studentmanagement.data.repository.StudentRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class StudentViewModel(
+@HiltViewModel
+class StudentViewModel @Inject constructor(
     private val repository: StudentRepository
 ) : ViewModel() {
 

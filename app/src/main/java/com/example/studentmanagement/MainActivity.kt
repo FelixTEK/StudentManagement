@@ -7,28 +7,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.studentmanagement.data.remote.AuthApi
-import com.example.studentmanagement.data.remote.RetrofitClient
 import com.example.studentmanagement.data.remote.TokenStorage
 import com.example.studentmanagement.ui.login.LoginScreen
-import com.example.studentmanagement.ui.login.LoginViewModel
 import com.example.studentmanagement.ui.student.StudentScreen
-import com.example.studentmanagement.ui.student.StudentViewModel
 import com.example.studentmanagement.ui.theme.StudentManagementTheme
 import com.example.studentmanagement.worker.SyncScheduler
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var tokenStorage: TokenStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val tokenStorage = TokenStorage(applicationContext)
-        val retrofit = RetrofitClient.create(tokenStorage)
-        val authApi = retrofit.create(AuthApi::class.java)
-
-        val repository = (application as StudentApplication).appContainer.studentRepository
-
-        val viewModel = StudentViewModel(repository)
-        val loginViewModel = LoginViewModel(authApi, tokenStorage)
 
         SyncScheduler.schedulePeriodicSync(this)
 
@@ -39,10 +33,9 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (isLoggedIn) {
-                    StudentScreen(viewModel = viewModel)
+                    StudentScreen()
                 } else {
                     LoginScreen(
-                        viewModel = loginViewModel,
                         onLoginSuccess = { isLoggedIn = true }
                     )
                 }
