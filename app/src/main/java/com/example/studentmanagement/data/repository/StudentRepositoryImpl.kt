@@ -4,24 +4,44 @@ import com.example.studentmanagement.data.local.StudentDao
 import com.example.studentmanagement.data.local.StudentEntity
 import com.example.studentmanagement.data.remote.StudentApi
 import com.example.studentmanagement.data.remote.StudentCreateRequest
+import com.example.studentmanagement.domain.model.Student
+import com.example.studentmanagement.domain.repository.StudentRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class StudentRepository @Inject constructor(
+class StudentRepositoryImpl @Inject constructor(
     private val dao: StudentDao,
     private val api: StudentApi
-) {
-    fun observeStudents(): Flow<List<StudentEntity>> {
+) : StudentRepository {
+
+    override fun observeStudents(): Flow<List<Student>> {
         return dao.observeStudents()
+            .map { entities ->
+                entities.map { entity ->
+                    Student(
+                        id = entity.serverId ?: entity.localId,
+                        studentCode = entity.studentCode,
+                        name = entity.name,
+                        major = entity.major,
+                        syncStatus = entity.syncStatus
+                    )
+                }
+            }
     }
 
-    suspend fun addStudent(student: StudentEntity) {
+    override suspend fun addStudent(student: Student) {
         dao.insertStudent(
-            student.copy(syncStatus = "PENDING")
+            StudentEntity(
+                studentCode = student.studentCode,
+                name = student.name,
+                major = student.major,
+                syncStatus = "PENDING"
+            )
         )
     }
 
-    suspend fun syncPending() {
+    override suspend fun syncPending() {
         val pending = dao.getPendingStudents()
 
         for (student in pending) {

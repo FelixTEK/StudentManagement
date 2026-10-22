@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.studentmanagement.data.local.StudentEntity
+import com.example.studentmanagement.domain.model.Student
 import com.example.studentmanagement.worker.SyncScheduler
 
 @Composable
@@ -68,7 +68,7 @@ fun StudentScreen(viewModel: StudentViewModel = hiltViewModel()) {
             onDismiss = { showAddDialog = false },
             onSave = { code, name, major ->
                 viewModel.addStudent(
-                    StudentEntity(studentCode = code, name = name, major = major)
+                    Student(id = 0, studentCode = code, name = name, major = major)
                 )
                 showAddDialog = false
             }
