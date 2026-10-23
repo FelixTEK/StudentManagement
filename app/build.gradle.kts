@@ -65,6 +65,11 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.2.0")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
 
+    implementation("androidx.camera:camera-camera2:1.4.2")
+    implementation("androidx.camera:camera-lifecycle:1.4.2")
+    implementation("androidx.camera:camera-view:1.4.2")
+    implementation("androidx.navigation:navigation-compose:2.9.0")
+
     // Jetpack Compose BOM & UI
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
