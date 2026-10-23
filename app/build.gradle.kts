@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.4.2")
     implementation("androidx.camera:camera-view:1.4.2")
     implementation("androidx.navigation:navigation-compose:2.9.0")
+    implementation("com.airbnb.android:lottie-compose:6.6.7")
 
     // Jetpack Compose BOM & UI
     implementation(platform(libs.androidx.compose.bom))
